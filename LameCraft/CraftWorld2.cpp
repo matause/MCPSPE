@@ -267,19 +267,7 @@ CraftWorld::CraftWorld()
 	blockTypes.push_back(UserBlock22());
     blockTypes.push_back(UserBlock23());
 	blockTypes.push_back(EmptyBlock0());
-	    blockTypes.push_back(MelonBlockSecond());
-    blockTypes.push_back(LifeBlockSecond());
-    blockTypes.push_back(EnderTopSecond());
 
-    blockTypes.push_back(EnderLegsSecond());
-    blockTypes.push_back(ZombieTopSecond());
-    blockTypes.push_back(ZombieLegsSecond());
-    blockTypes.push_back(TrapDoor2Second());
-    blockTypes.push_back(Door3Second());
-    blockTypes.push_back(Door4Second());
-    blockTypes.push_back(Furnace2Second());
-blockTypes.push_back(CloudSecond());
-    blockTypes.push_back(IronBlockSecond());
 	
     //must be last
     blockTypes.push_back(MelonBlock());

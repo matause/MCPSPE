@@ -684,6 +684,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
         //add cube
         if(keyPressed(InputHelper::Instance()->getButtonToAction(14)))
         {
+		keyPressed(InputHelper::Instance()->getButtonToAction(14));
             cubeMove = true;
 
             //add cube
