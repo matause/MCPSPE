@@ -684,7 +684,9 @@ void StatePlay::HandleEvents(StateManager* sManager)
         //add cube
         if(keyPressed(InputHelper::Instance()->getButtonToAction(14)))
         {
-		keyPressed(InputHelper::Instance()->getButtonToAction(14));
+		    
+			
+			keyPressed(InputHelper::Instance()->getButtonToAction(14));
             cubeMove = true;
 
             //add cube
@@ -956,22 +958,27 @@ void StatePlay::HandleEvents(StateManager* sManager)
 					
 					if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == GrassBlock::getID())
                     {
-                       mWorld->player.GrassNumber -= 1;
+                      mWorld->player.GrassNumber -= 1;
+					  keyPressed(InputHelper::Instance()->getButtonToAction(14));
+					  
                     }
                      
 					 
 					 if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == DirtBlock::getID())
                     {
                        mWorld->player.DirtNumber -= 1;
+					   keyPressed(InputHelper::Instance()->getButtonToAction(14));
                     }
 					
 					 if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == WoodBlock::getID())
                     {
+					keyPressed(InputHelper::Instance()->getButtonToAction(14));
                        mWorld->player.LogNumber -= 1;
                     }
 					
 					 if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == BoxBlock::getID())
                     {
+					keyPressed(InputHelper::Instance()->getButtonToAction(14));
                        mWorld->player.PlankNumber -= 1;
                     }
 					
