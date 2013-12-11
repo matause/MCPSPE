@@ -1084,7 +1084,7 @@ void StateMenu::Draw(StateManager* sManager)
         mRender->DebugPrint(40,140,"modder:      Michal5575");
         mRender->DebugPrint(40,160,"www:         michal5575.cz");
         mRender->DebugPrint(40,180,"rev:         MCPSPE v0.3");
-		mRender->DebugPrint(40,200,"Code helper:      Szacun");
+		mRender->DebugPrint(40,200,"Testers:  Everyone with DevRel");
 
         //button text
         mRender->SetFontStyle(0.5f,0xFFFFFFFF,0xFF000000,0x00000200);
