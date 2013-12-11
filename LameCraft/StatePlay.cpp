@@ -1130,7 +1130,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
         }
 
 
-        if(keyHold(InputHelper::Instance()->getButtonToAction(14)) && (mWorld->player.gamemode == 0 || mWorld->player.gamemode == 2))
+        if(keyPressed(InputHelper::Instance()->getButtonToAction(14)) && (mWorld->player.gamemode == 0 || mWorld->player.gamemode == 2))
         {
 		 cubeMove = true;
 
@@ -1153,6 +1153,29 @@ void StatePlay::HandleEvents(StateManager* sManager)
 
                             
                                 mWorld->player.GrassNumber -= 1;
+                            
+                        }
+						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 2)
+                        {
+
+                            
+                                mWorld->player.DirtNumber -= 1;
+                            
+                        }
+						
+						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 8)
+                        {
+
+                            
+                                mWorld->player.LogNumber -= 1;
+                            
+                        }
+						
+						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 34)
+                        {
+
+                            
+                                mWorld->player.PlankNumber -= 1;
                             
                         }
 						
