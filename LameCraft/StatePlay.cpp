@@ -1130,7 +1130,20 @@ void StatePlay::HandleEvents(StateManager* sManager)
         }
 
 
+        if(keyHold(InputHelper::Instance()->getButtonToAction(14)) && (mWorld->player.gamemode == 0 || mWorld->player.gamemode == 2))
+        {
+		Vector3 testPos;
+		 Vector3 rayDir = fppCam->m_vView - fppCam->m_vPosition;
+            rayDir.normalize();
+		if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 1)
+                        {
 
+                            
+                                mWorld->player.GrassNumber -= 1;
+                            
+                        }
+						
+		}
         //remove cube
         if(keyHold(InputHelper::Instance()->getButtonToAction(13)) && (mWorld->player.gamemode == 0 || mWorld->player.gamemode == 2))
         {
