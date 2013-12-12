@@ -1145,7 +1145,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
 			//we are moving slowly to the target +=0.5
             for(float i = 0; i < 5.25f; i+=0.25f)
             {
-                testPos = fppCam->m_vPosition;
+                testPos = fppCam->m_vPosition + (rayDir);
                 
 			//if add block make -1 Bl
 		if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 1)
