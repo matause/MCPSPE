@@ -1156,14 +1156,24 @@ void StatePlay::HandleEvents(StateManager* sManager)
                         {
 
                             
-                                mWorld->player.GrassNumber -= 1;
+                                if(mWorld->player.GrassNumber -= 1);
+								else if(mWorld->player.GrassNumber <= 0)
+								{
+								mWorld->player.health = 0;
+								mWorld->player.hunger = 0;
+								}
                             
                         }
 						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 2)
                         {
 
                             
-                                mWorld->player.DirtNumber -= 1;
+                                if(mWorld->player.DirtNumber -= 1);
+								else if(mWorld->player.DirtNumber <= 0)
+								{
+								mWorld->player.health = 0;
+								mWorld->player.hunger = 0;
+								}
                             
                         }
 						
@@ -1171,7 +1181,12 @@ void StatePlay::HandleEvents(StateManager* sManager)
                         {
 
                             
-                                mWorld->player.LogNumber -= 1;
+                                if(mWorld->player.LogNumber -= 1);
+								else if(mWorld->player.LogNumber <= 0)
+								{
+								mWorld->player.health = 0;
+								mWorld->player.hunger = 0;
+								}
                             
                         }
 						
@@ -1179,7 +1194,12 @@ void StatePlay::HandleEvents(StateManager* sManager)
                         {
 
                             
-                                mWorld->player.PlankNumber -= 1;
+                                if(mWorld->player.PlankNumber -= 1);
+								else if(mWorld->player.PlankNumber <= 0)
+								{
+								mWorld->player.health = 0;
+								mWorld->player.hunger = 0;
+								}
                             
                         }
 
