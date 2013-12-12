@@ -206,7 +206,7 @@ CraftWorld::CraftWorld()
 	blockTypes.push_back(HC2());
 	blockTypes.push_back(HC3());
 	blockTypes.push_back(HC4());
-	
+	blockTypes.push_back(HC5());
 	blockTypes.push_back(HC6());
 	blockTypes.push_back(HC7());
 	blockTypes.push_back(HC8());

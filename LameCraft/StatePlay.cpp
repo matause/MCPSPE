@@ -1129,26 +1129,30 @@ void StatePlay::HandleEvents(StateManager* sManager)
 
         }
 
-
-        if(keyPressed(InputHelper::Instance()->getButtonToAction(14)) && (mWorld->player.gamemode == 0 || mWorld->player.gamemode == 2))
+		 if(keyPressed(InputHelper::Instance()->getButtonToAction(14)))
         {
-		 cubeMove = true;
+            cubeMove = true;
 
-            //add cube
+            bool wasLight = false;
+            block_t oldBlock = 0;
+            //remove cube
             Vector3 rayDir = fppCam->m_vView - fppCam->m_vPosition;
             rayDir.normalize();
-			
 
-
-            //get position and view vector
+            //we are takin our positiona and view vector
             Vector3 testPos;
-			//we are moving slowly to the target +=0.5
+
+
+            //we are moving slowly to the target +=0.5
             for(float i = 0; i < 5.25f; i+=0.25f)
             {
-                testPos = (rayDir * i);
-                
-			//if add block make -1 Bl
-		if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 1)
+                testPos = fppCam->m_vPosition + (rayDir * i);
+
+                //check if we touch something
+                if(mWorld->BlockEditable(testPos.x,testPos.y,testPos.z))
+                {
+
+                    if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 1)
                         {
 
                             
@@ -1178,9 +1182,14 @@ void StatePlay::HandleEvents(StateManager* sManager)
                                 mWorld->player.PlankNumber -= 1;
                             
                         }
-						
-		}
-		}
+
+
+
+                    fppCam->needUpdate = true;
+                    break;
+                }
+            }
+        }
         //remove cube
         if(keyHold(InputHelper::Instance()->getButtonToAction(13)) && (mWorld->player.gamemode == 0 || mWorld->player.gamemode == 2))
         {
