@@ -209,6 +209,8 @@ void StatePlay::Init()
 	mWorld->player.DirtNumber = 1;
 	mWorld->player.LogNumber = 1;
 	mWorld->player.PlankNumber = 1;
+	mWorld->player.IronNumber = 1;
+	mWorld->player.IronIngNumber = 0;
     mWorld->player.melons = 0;
     mWorld->player.hunger = 100;
     mWorld->player.score = 0;
@@ -274,6 +276,8 @@ void StatePlay::InitParametric(int terrainType,bool makeFlat,bool makeTrees,bool
 	mWorld->player.DirtNumber = 1;
 	mWorld->player.LogNumber = 1;
 	mWorld->player.PlankNumber = 1;
+	mWorld->player.IronNumber = 1;
+	mWorld->player.IronIngNumber = 0;
     mWorld->player.melons = 0;
     mWorld->player.hunger = 100;
     mWorld->player.score = 0;
@@ -322,6 +326,8 @@ void StatePlay::LoadMap(std::string fileName,bool compressed)
 		mWorld->player.DirtNumber = mWorld->DirtNumber();
 		mWorld->player.LogNumber = mWorld->LogNumber();
 		mWorld->player.PlankNumber = mWorld->PlankNumber();
+		mWorld->player.IronNumber = mWorld->IronNumber();
+		mWorld->player.IrongIngNumber = mWorld->IronIngNumber();
         mWorld->player.melons = mWorld->melons();
         mWorld->player.hunger = mWorld->hunger();
         mWorld->player.score = mWorld->score();
@@ -1218,6 +1224,21 @@ void StatePlay::HandleEvents(StateManager* sManager)
                             
                         }
 						
+						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 41)
+                        {
+
+                            
+                                if(mWorld->player.IronNumber -= 1);
+								else if(mWorld->player.IronNumber <= 0)
+								{
+								mWorld->player.health = 0;
+								mWorld->player.hunger = 0;
+								mWorld->player.gamemode = 2;
+								
+								}
+                            
+                        }
+						
 						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 8)
                         {
 
@@ -1699,6 +1720,13 @@ void StatePlay::HandleEvents(StateManager* sManager)
 
                             
                                 mWorld->player.PlankNumber += 1;
+                            
+                        }
+						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 41)
+                        {
+
+                            
+                                mWorld->player.IronNumber += 1;
                             
                         }
 						
@@ -4074,6 +4102,8 @@ void StatePlay::Draw(StateManager* sManager)
 	  mRender->DebugPrint(255,50,"Dirt: %i", mWorld->player.DirtNumber - 1);
 	   mRender->DebugPrint(255,70,"Log: %i", mWorld->player.LogNumber - 1);
 	    mRender->DebugPrint(255,90,"Plank: %i", mWorld->player.PlankNumber - 1);
+		 mRender->DebugPrint(255,110,"Iron: %i", mWorld->player.IronNumber - 1);
+		  mRender->DebugPrint(255,130,"Iron Ingot: %i", mWorld->player.IronIngNumber);
     
 	
 

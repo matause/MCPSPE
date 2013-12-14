@@ -390,6 +390,12 @@ void CraftWorld::SaveCompressedWorld(std::string  filename)
 	//numGrass
 	gzwrite(saveFile, &player.GrassNumber,sizeof(float));
 	
+	//numIron
+	gzwrite(saveFile, &player.IronNumber,sizeof(float));
+	
+	//numIronIng
+	gzwrite(saveFile, &player.IronIngNumber,sizeof(float));
+	
 	//numDirt
 	gzwrite(saveFile, &player.DirtNumber,sizeof(float));
 	
@@ -540,6 +546,10 @@ void CraftWorld::LoadCompressedWorld(std::string  filename)
 		
 		
 		gzread(saveFile, &player.LogNumber,sizeof(float));
+		
+		gzread(saveFile, &player.IronNumber,sizeof(float));
+		
+		gzread(saveFile, &player.IronIngNumber,sizeof(float));
 		
 		gzread(saveFile, &player.PlankNumber,sizeof(float));
         //num melons
@@ -16951,6 +16961,16 @@ int CraftWorld::LogNumber()
 int CraftWorld::PlankNumber()
 {
     return player.PlankNumber;
+}
+
+int CraftWorld::IronNumber()
+{
+    return player.IronNumber;
+}
+
+int CraftWorld::IronIngNumber()
+{
+    return player.IronIngNumber;
 }
 
 int CraftWorld::hunger()
