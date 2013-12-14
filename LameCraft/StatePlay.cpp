@@ -204,10 +204,10 @@ void StatePlay::Init()
     mWorld->player.maxhealth = 100;
     mWorld->player.health = 100;
     mWorld->player.Apples = 0;
-	mWorld->player.GrassNumber = 0;
-	mWorld->player.DirtNumber = 0;
-	mWorld->player.LogNumber = 0;
-	mWorld->player.PlankNumber = 0;
+	mWorld->player.GrassNumber = 1;
+	mWorld->player.DirtNumber = 1;
+	mWorld->player.LogNumber = 1;
+	mWorld->player.PlankNumber = 1;
     mWorld->player.melons = 0;
     mWorld->player.hunger = 100;
     mWorld->player.score = 0;
@@ -269,10 +269,10 @@ void StatePlay::InitParametric(int terrainType,bool makeFlat,bool makeTrees,bool
     mWorld->player.maxhealth = 100;
     mWorld->player.health = 100;
     mWorld->player.Apples = 0;
-	mWorld->player.GrassNumber = 0;
-	mWorld->player.DirtNumber = 0;
-	mWorld->player.LogNumber = 0;
-	mWorld->player.PlankNumber = 0;
+	mWorld->player.GrassNumber = 1;
+	mWorld->player.DirtNumber = 1;
+	mWorld->player.LogNumber = 1;
+	mWorld->player.PlankNumber = 1;
     mWorld->player.melons = 0;
     mWorld->player.hunger = 100;
     mWorld->player.score = 0;
@@ -1161,6 +1161,9 @@ void StatePlay::HandleEvents(StateManager* sManager)
 								{
 								mWorld->player.health = 0;
 								mWorld->player.hunger = 0;
+								mWorld->player.gamemode = 2;
+								
+
 								}
                             
                         }
@@ -1173,6 +1176,8 @@ void StatePlay::HandleEvents(StateManager* sManager)
 								{
 								mWorld->player.health = 0;
 								mWorld->player.hunger = 0;
+								mWorld->player.gamemode = 2;
+								
 								}
                             
                         }
@@ -1186,6 +1191,8 @@ void StatePlay::HandleEvents(StateManager* sManager)
 								{
 								mWorld->player.health = 0;
 								mWorld->player.hunger = 0;
+								mWorld->player.gamemode = 2;
+								
 								}
                             
                         }
@@ -1199,6 +1206,8 @@ void StatePlay::HandleEvents(StateManager* sManager)
 								{
 								mWorld->player.health = 0;
 								mWorld->player.hunger = 0;
+								mWorld->player.gamemode = 2;
+								
 								}
                             
                         }
@@ -2586,7 +2595,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
             }
 			if(selectPos == 2)//First crafting :)
             {
-                if(mWorld->player.LogNumber >= 1)
+                if(mWorld->player.LogNumber >= 2)
                 {
                    
                         
@@ -3817,10 +3826,10 @@ void StatePlay::Draw(StateManager* sManager)
 	//Text Start
 	
 	mRender->DebugPrint(255,10,"Score.: %i", mWorld->player.score); // show your score
-	 mRender->DebugPrint(255,30,"Grass: %i", mWorld->player.GrassNumber);
-	  mRender->DebugPrint(255,50,"Dirt: %i", mWorld->player.DirtNumber);
-	   mRender->DebugPrint(255,70,"Log: %i", mWorld->player.LogNumber);
-	    mRender->DebugPrint(255,90,"Plank: %i", mWorld->player.PlankNumber);
+	 mRender->DebugPrint(255,30,"Grass: %i", mWorld->player.GrassNumber - 1);
+	  mRender->DebugPrint(255,50,"Dirt: %i", mWorld->player.DirtNumber - 1);
+	   mRender->DebugPrint(255,70,"Log: %i", mWorld->player.LogNumber - 1);
+	    mRender->DebugPrint(255,90,"Plank: %i", mWorld->player.PlankNumber - 1);
 
 
 	

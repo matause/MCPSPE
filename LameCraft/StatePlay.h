@@ -52,6 +52,7 @@ public:
 
 	void LoadMap(std::string fileName,bool compressed);
 	void SetWorldAndSaveName(std::string worldName,std::string fileName);
+	void WorldSize(std::string worldSize);
 	void InitCamera();
 
 	//keys helpers
