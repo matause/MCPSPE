@@ -4487,65 +4487,9 @@ void StatePlay::Draw(StateManager* sManager)
         mRender->DebugPrint(240,165,"No crafting recipes :(");
 
 
-        if(selectPos == 0)
-        {
-            if(mWorld->player.jumpHeight == 0)
-            {
-                mRender->DebugPrint(50,50,"needed: 60");
-            }
-            else if(mWorld->player.jumpHeight == 1 || mWorld->player.jumpHeight == 2)
-            {
-                mRender->DebugPrint(50,50,"needed: 90");
-            }
-            else if(mWorld->player.jumpHeight == 3)
-            {
-                mRender->DebugPrint(50,50,"needed: 120");
-            }
-            else
-            {
-                mRender->DebugPrint(120,50,"max");
-            }
-        }
+       
 
-        if(selectPos == 1)
-        {
-            if(mWorld->player.walkSpeed == 0)
-            {
-                mRender->DebugPrint(50,50,"needed: 60");
-            }
-            else if(mWorld->player.walkSpeed == 1 || mWorld->player.walkSpeed == 2)
-            {
-                mRender->DebugPrint(50,50,"needed: 90");
-            }
-            else if(mWorld->player.walkSpeed == 3)
-            {
-                mRender->DebugPrint(50,50,"needed: 120");
-            }
-            else
-            {
-                mRender->DebugPrint(120,50,"max");
-            }
-        }
-
-        if(selectPos == 2)
-        {
-            if(mWorld->player.fireResistance == 0)
-            {
-                mRender->DebugPrint(50,50,"needed: 60");
-            }
-            else if(mWorld->player.fireResistance == 1 || mWorld->player.fireResistance == 2)
-            {
-                mRender->DebugPrint(50,50,"needed: 90");
-            }
-            else if(mWorld->player.fireResistance == 3)
-            {
-                mRender->DebugPrint(50,50,"needed: 120");
-            }
-            else
-            {
-                mRender->DebugPrint(120,50,"max");
-            }
-        }
+  
 
     }
 	else if(menuState == 6)
@@ -4589,65 +4533,7 @@ void StatePlay::Draw(StateManager* sManager)
         mRender->DebugPrint(240,165,"No cooking recipes :(");
 
 
-        if(selectPos == 0)
-        {
-            if(mWorld->player.jumpHeight == 0)
-            {
-                mRender->DebugPrint(50,50,"needed: 60");
-            }
-            else if(mWorld->player.jumpHeight == 1 || mWorld->player.jumpHeight == 2)
-            {
-                mRender->DebugPrint(50,50,"needed: 90");
-            }
-            else if(mWorld->player.jumpHeight == 3)
-            {
-                mRender->DebugPrint(50,50,"needed: 120");
-            }
-            else
-            {
-                mRender->DebugPrint(120,50,"max");
-            }
-        }
-
-        if(selectPos == 1)
-        {
-            if(mWorld->player.walkSpeed == 0)
-            {
-                mRender->DebugPrint(50,50,"needed: 60");
-            }
-            else if(mWorld->player.walkSpeed == 1 || mWorld->player.walkSpeed == 2)
-            {
-                mRender->DebugPrint(50,50,"needed: 90");
-            }
-            else if(mWorld->player.walkSpeed == 3)
-            {
-                mRender->DebugPrint(50,50,"needed: 120");
-            }
-            else
-            {
-                mRender->DebugPrint(120,50,"max");
-            }
-        }
-
-        if(selectPos == 2)
-        {
-            if(mWorld->player.fireResistance == 0)
-            {
-                mRender->DebugPrint(50,50,"needed: 60");
-            }
-            else if(mWorld->player.fireResistance == 1 || mWorld->player.fireResistance == 2)
-            {
-                mRender->DebugPrint(50,50,"needed: 90");
-            }
-            else if(mWorld->player.fireResistance == 3)
-            {
-                mRender->DebugPrint(50,50,"needed: 120");
-            }
-            else
-            {
-                mRender->DebugPrint(120,50,"max");
-            }
-        }
+       
 
     }
 
