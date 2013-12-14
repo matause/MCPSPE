@@ -664,6 +664,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
                 }
             }
         }
+	
         //switch up
         if(keyPressed(InputHelper::Instance()->getButtonToAction(10)))
         {
@@ -819,15 +820,47 @@ void StatePlay::HandleEvents(StateManager* sManager)
 
                     }
 					
-					
+					//Open crafting menu if click on crafting table
 					if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 105)
                     {
-                        menuState = 4;
+                        menuState = 5;
                         selectPos = 0;
 
                         int	curchunkTarget = mWorld->getChunkId(testPos);
 
                         mWorld->GetBlock(testPos.x, testPos.y, testPos.z) = 105;
+                        fppCam->needUpdate = true;
+                        //Rebuild nearby world
+                        mWorld->rebuildChunk(curchunkTarget);
+                        mWorld->rebuildTransparentChunk(curchunkTarget);
+                        mWorld->rebuildNearestChunks(curchunkTarget,testPos);
+                        return;
+                    }
+					//Open cooking menu if click on furnace
+					if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 229)
+                    {
+                        menuState = 6;
+                        selectPos = 0;
+
+                        int	curchunkTarget = mWorld->getChunkId(testPos);
+
+                        mWorld->GetBlock(testPos.x, testPos.y, testPos.z) = 229;
+                        fppCam->needUpdate = true;
+                        //Rebuild nearby world
+                        mWorld->rebuildChunk(curchunkTarget);
+                        mWorld->rebuildTransparentChunk(curchunkTarget);
+                        mWorld->rebuildNearestChunks(curchunkTarget,testPos);
+                        return;
+                    }
+					
+					if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 104)
+                    {
+                        menuState = 6;
+                        selectPos = 0;
+
+                        int	curchunkTarget = mWorld->getChunkId(testPos);
+
+                        mWorld->GetBlock(testPos.x, testPos.y, testPos.z) = 104;
                         fppCam->needUpdate = true;
                         //Rebuild nearby world
                         mWorld->rebuildChunk(curchunkTarget);
@@ -2761,6 +2794,212 @@ void StatePlay::HandleEvents(StateManager* sManager)
             }
         }
     }
+	else if(menuState == 5)
+    {
+        if(mSystemMgr->KeyPressed(PSP_CTRL_UP))
+        {
+            selectPos--;
+            if(selectPos < 0)
+                selectPos = 2;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_DOWN))
+        {
+            selectPos++;
+            if(selectPos > 2)
+                selectPos = 0;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
+        {
+            menuState = 0;
+            selectPos = 0;
+            optionsMenuPos = 0;
+            menuOptions = false;
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CROSS))
+        {
+            if(selectPos == 0)//jump
+            {
+                if(mWorld->player.jumpHeight == 0 || mWorld->player.jumpHeight == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.jumpHeight += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.jumpHeight == 2 || mWorld->player.jumpHeight == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.jumpHeight += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.jumpHeight == 4)
+                {
+                    return;
+                }
+            }
+
+            if(selectPos == 1)//walk
+            {
+                if(mWorld->player.walkSpeed == 0 || mWorld->player.walkSpeed == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 2 || mWorld->player.walkSpeed == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 4)
+                {
+                    return;
+                }
+            }
+
+            if(selectPos == 2)//fire resisnatce
+            {
+                if(mWorld->player.fireResistance == 0 || mWorld->player.fireResistance == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 2 || mWorld->player.fireResistance == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 4)
+                {
+                    return;
+                }
+            }
+        }
+    }
+	else if(menuState == 6)
+    {
+        if(mSystemMgr->KeyPressed(PSP_CTRL_UP))
+        {
+            selectPos--;
+            if(selectPos < 0)
+                selectPos = 2;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_DOWN))
+        {
+            selectPos++;
+            if(selectPos > 2)
+                selectPos = 0;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
+        {
+            menuState = 0;
+            selectPos = 0;
+            optionsMenuPos = 0;
+            menuOptions = false;
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CROSS))
+        {
+            if(selectPos == 0)//jump
+            {
+                if(mWorld->player.jumpHeight == 0 || mWorld->player.jumpHeight == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.jumpHeight += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.jumpHeight == 2 || mWorld->player.jumpHeight == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.jumpHeight += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.jumpHeight == 4)
+                {
+                    return;
+                }
+            }
+
+            if(selectPos == 1)//walk
+            {
+                if(mWorld->player.walkSpeed == 0 || mWorld->player.walkSpeed == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 2 || mWorld->player.walkSpeed == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 4)
+                {
+                    return;
+                }
+            }
+
+            if(selectPos == 2)//fire resisnatce
+            {
+                if(mWorld->player.fireResistance == 0 || mWorld->player.fireResistance == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 2 || mWorld->player.fireResistance == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 4)
+                {
+                    return;
+                }
+            }
+        }
+    }
 }
 
 
@@ -3830,21 +4069,13 @@ void StatePlay::Draw(StateManager* sManager)
 	
 	mRender->DebugPrint(255,10,"Score.: %i", mWorld->player.score); // show your score
 	
-	if(selectedNumberSet = 0)
-	{
+	
 	 mRender->DebugPrint(255,30,"Grass: %i", mWorld->player.GrassNumber - 1);
 	  mRender->DebugPrint(255,50,"Dirt: %i", mWorld->player.DirtNumber - 1);
 	   mRender->DebugPrint(255,70,"Log: %i", mWorld->player.LogNumber - 1);
 	    mRender->DebugPrint(255,90,"Plank: %i", mWorld->player.PlankNumber - 1);
-    }
+    
 	
-	if(selectedNumberSet = 1)
-	{
-	 mRender->DebugPrint(255,30,"Test: %i", mWorld->player.GrassNumber - 1);
-	  mRender->DebugPrint(255,50,"Test: %i", mWorld->player.DirtNumber - 1);
-	   mRender->DebugPrint(255,70,"Test: %i", mWorld->player.LogNumber - 1);
-	    mRender->DebugPrint(255,90,"Test: %i", mWorld->player.PlankNumber - 1);
-    }
 
 	
 	//End of text
@@ -4244,7 +4475,7 @@ void StatePlay::Draw(StateManager* sManager)
 
         mRender->DebugPrint(240,25,"CRAFTING TABLE");
 
-        mRender->DebugPrint(60,25,"score: %i", mWorld->player.score);
+      
 
         //draw subtitles on buttons
         mRender->DebugPrint(240,105,"No crafting recipes :(");
@@ -4254,6 +4485,108 @@ void StatePlay::Draw(StateManager* sManager)
 
         //draw subtitles on buttons
         mRender->DebugPrint(240,165,"No crafting recipes :(");
+
+
+        if(selectPos == 0)
+        {
+            if(mWorld->player.jumpHeight == 0)
+            {
+                mRender->DebugPrint(50,50,"needed: 60");
+            }
+            else if(mWorld->player.jumpHeight == 1 || mWorld->player.jumpHeight == 2)
+            {
+                mRender->DebugPrint(50,50,"needed: 90");
+            }
+            else if(mWorld->player.jumpHeight == 3)
+            {
+                mRender->DebugPrint(50,50,"needed: 120");
+            }
+            else
+            {
+                mRender->DebugPrint(120,50,"max");
+            }
+        }
+
+        if(selectPos == 1)
+        {
+            if(mWorld->player.walkSpeed == 0)
+            {
+                mRender->DebugPrint(50,50,"needed: 60");
+            }
+            else if(mWorld->player.walkSpeed == 1 || mWorld->player.walkSpeed == 2)
+            {
+                mRender->DebugPrint(50,50,"needed: 90");
+            }
+            else if(mWorld->player.walkSpeed == 3)
+            {
+                mRender->DebugPrint(50,50,"needed: 120");
+            }
+            else
+            {
+                mRender->DebugPrint(120,50,"max");
+            }
+        }
+
+        if(selectPos == 2)
+        {
+            if(mWorld->player.fireResistance == 0)
+            {
+                mRender->DebugPrint(50,50,"needed: 60");
+            }
+            else if(mWorld->player.fireResistance == 1 || mWorld->player.fireResistance == 2)
+            {
+                mRender->DebugPrint(50,50,"needed: 90");
+            }
+            else if(mWorld->player.fireResistance == 3)
+            {
+                mRender->DebugPrint(50,50,"needed: 120");
+            }
+            else
+            {
+                mRender->DebugPrint(120,50,"max");
+            }
+        }
+
+    }
+	else if(menuState == 6)
+    {
+        sceGuDisable(GU_DEPTH_TEST);
+        sceGuEnable(GU_BLEND);
+        sceGuColor(GU_COLOR(1,1,1,1.0f));
+
+     
+        buttonSprite->SetPosition(240,100);
+        buttonSprite->Draw();
+
+
+        buttonSprite->SetPosition(240,130);
+        buttonSprite->Draw();
+
+ 
+        buttonSprite->SetPosition(240,160);
+        buttonSprite->Draw();
+
+
+
+        //selected button
+        sbuttonSprite->SetPosition(240,(selectPos * 30) + 100);
+        sbuttonSprite->Draw();
+
+        sceGuDisable(GU_BLEND);
+        sceGuEnable(GU_DEPTH_TEST);
+
+        mRender->DebugPrint(240,25,"FURNACE");
+
+       
+
+        //draw subtitles on buttons
+        mRender->DebugPrint(240,105,"No cooking recipes :(");
+
+        //draw subtitles on buttons
+        mRender->DebugPrint(240,135,"No cooking recipes :(");
+
+        //draw subtitles on buttons
+        mRender->DebugPrint(240,165,"No cooking recipes :(");
 
 
         if(selectPos == 0)
