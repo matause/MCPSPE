@@ -116,6 +116,7 @@ private:
 	int cubesSets;
 	int selectedCube;
 	int selectedCubeSet;
+	int selectedNumberSet;
 	int selectedCubeStart;
 	int selectedCubeEnd;
 

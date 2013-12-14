@@ -42,6 +42,7 @@ StatePlay::StatePlay()
 
     selectedCube = 0;
     selectedCubeSet = 0;
+	selectedNumberSet = 0;
     selectedCubeStart = 0;
 
     ram1 = 0;
@@ -650,6 +651,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
         if(keyPressed(InputHelper::Instance()->getButtonToAction(11)))
         {
             selectedCubeSet-=9;
+			selectedNumberSet-=1;
             if(selectedCubeSet < 0)
             {
                 selectedCubeSet = (cubesSets - 1) * 9;
@@ -666,6 +668,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
         if(keyPressed(InputHelper::Instance()->getButtonToAction(10)))
         {
             selectedCubeSet+=9;
+			selectedNumberSet+=1;
 
             if(selectedCubeSet == (cubesSets - 1) * 9)
             {
@@ -3826,11 +3829,22 @@ void StatePlay::Draw(StateManager* sManager)
 	//Text Start
 	
 	mRender->DebugPrint(255,10,"Score.: %i", mWorld->player.score); // show your score
+	
+	if(selectedNumberSet = 0)
+	{
 	 mRender->DebugPrint(255,30,"Grass: %i", mWorld->player.GrassNumber - 1);
 	  mRender->DebugPrint(255,50,"Dirt: %i", mWorld->player.DirtNumber - 1);
 	   mRender->DebugPrint(255,70,"Log: %i", mWorld->player.LogNumber - 1);
 	    mRender->DebugPrint(255,90,"Plank: %i", mWorld->player.PlankNumber - 1);
-
+    }
+	
+	if(selectedNumberSet = 1)
+	{
+	 mRender->DebugPrint(255,30,"Test: %i", mWorld->player.GrassNumber - 1);
+	  mRender->DebugPrint(255,50,"Test: %i", mWorld->player.DirtNumber - 1);
+	   mRender->DebugPrint(255,70,"Test: %i", mWorld->player.LogNumber - 1);
+	    mRender->DebugPrint(255,90,"Test: %i", mWorld->player.PlankNumber - 1);
+    }
 
 	
 	//End of text
