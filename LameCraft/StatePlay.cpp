@@ -2955,17 +2955,18 @@ void StatePlay::HandleEvents(StateManager* sManager)
 
         if(mSystemMgr->KeyPressed(PSP_CTRL_CROSS))
         {
-            if(selectPos == 0)//jump
+            if(selectPos == 0)
             {
                
               if(mWorld->player.IronNumber >= 2)
-                {
+              {
                    
                         
 						if(mWorld->player.IronNumber -= 1)
 						{
-						mWorld->player.IronIngNumber += 4;
+						mWorld->player.IronIngNumber += 1;
 						}
+			   }
             }
 
             if(selectPos == 1)//walk
