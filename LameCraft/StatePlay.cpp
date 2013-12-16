@@ -327,7 +327,7 @@ void StatePlay::LoadMap(std::string fileName,bool compressed)
 		mWorld->player.LogNumber = mWorld->LogNumber();
 		mWorld->player.PlankNumber = mWorld->PlankNumber();
 		mWorld->player.IronNumber = mWorld->IronNumber();
-		mWorld->player.IrongIngNumber = mWorld->IronIngNumber();
+		mWorld->player.IronIngNumber = mWorld->IronIngNumber();
         mWorld->player.melons = mWorld->melons();
         mWorld->player.hunger = mWorld->hunger();
         mWorld->player.score = mWorld->score();
@@ -2957,26 +2957,15 @@ void StatePlay::HandleEvents(StateManager* sManager)
         {
             if(selectPos == 0)//jump
             {
-                if(mWorld->player.jumpHeight == 0 || mWorld->player.jumpHeight == 1)
+               
+              if(mWorld->player.IronNumber >= 2)
                 {
-                    if(mWorld->player.score >= 60)
-                    {
-                        mWorld->player.jumpHeight += 1;
-                        mWorld->player.score -= 60;
-                    }
-                }
-                else if(mWorld->player.jumpHeight == 2 || mWorld->player.jumpHeight == 3)
-                {
-                    if(mWorld->player.score >= 90)
-                    {
-                        mWorld->player.jumpHeight += 1;
-                        mWorld->player.score -= 90;
-                    }
-                }
-                else if(mWorld->player.jumpHeight == 4)
-                {
-                    return;
-                }
+                   
+                        
+						if(mWorld->player.IronNumber -= 1)
+						{
+						mWorld->player.IronIngNumber += 4;
+						}
             }
 
             if(selectPos == 1)//walk
@@ -4554,7 +4543,7 @@ void StatePlay::Draw(StateManager* sManager)
        
 
         //draw subtitles on buttons
-        mRender->DebugPrint(240,105,"No cooking recipes :(");
+        mRender->DebugPrint(240,105,"Iron Ingot");
 
         //draw subtitles on buttons
         mRender->DebugPrint(240,135,"No cooking recipes :(");
