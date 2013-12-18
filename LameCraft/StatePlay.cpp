@@ -675,7 +675,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
         if(keyPressed(InputHelper::Instance()->getButtonToAction(10)))
         {
             selectedCubeSet+=9;
-			selectedNumberSet+=1;
+			
 
             if(selectedCubeSet == (cubesSets - 1) * 9)
             {
@@ -4080,26 +4080,37 @@ void StatePlay::Draw(StateManager* sManager)
     }
 
 	
-	{
-	//Info panel
+
+	    
+		 
+    if(selectedCubeSet == 0)
+{
+mRender->DebugPrint(115,260,"%i",mWorld->player.GrassNumber - 1);
+mRender->DebugPrint(345,260,"%i",mWorld->player.LogNumber - 1);
+mRender->DebugPrint(145,260,"%i", mWorld->player.DirtNumber - 1);
+	   
+	}
+	   if(selectedCubeSet == 27)
+{
+
+	       mRender->DebugPrint(315,260,"%i", mWorld->player.PlankNumber - 1);
+		
+		
+
+	}
 	
-	//Text Start
-	
-	mRender->DebugPrint(255,10,"Score.: %i", mWorld->player.score); // show your score
-	
-	
-	 mRender->DebugPrint(255,30,"Grass: %i", mWorld->player.GrassNumber - 1);
-	  mRender->DebugPrint(255,50,"Dirt: %i", mWorld->player.DirtNumber - 1);
-	   mRender->DebugPrint(255,70,"Log: %i", mWorld->player.LogNumber - 1);
-	    mRender->DebugPrint(255,90,"Plank: %i", mWorld->player.PlankNumber - 1);
-		 mRender->DebugPrint(255,110,"Iron: %i", mWorld->player.IronNumber - 1);
-		  mRender->DebugPrint(255,130,"Iron Ingot: %i", mWorld->player.IronIngNumber);
-    
+	  if(selectedCubeSet == 36)
+{
+	      mRender->DebugPrint(255,260,"%i", mWorld->player.IronNumber - 1);
+		  mRender->DebugPrint(100,200,"Iron Ingot: %i", mWorld->player.IronIngNumber);
+		
+		
+
+	}
 	
 
 	
-	//End of text
-	}
+	
 	
     sceGuEnable(GU_DEPTH_TEST);
     sceGuDepthMask(0);
