@@ -40,6 +40,8 @@ typedef struct player
 	int PlankNumber;
 	int IronNumber;
 	int IronIngNumber;
+	int BoneNumber;
+	int SandNumber;
 	int melons;
 	int hunger;
 	int score;
@@ -172,6 +174,8 @@ player_t player;
 	int PlankNumber();
 	int IronNumber();
 	int IronIngNumber();
+	int BoneNumber();
+	int SandNumber();
 	int melons();
 	int hunger();
 	int score();

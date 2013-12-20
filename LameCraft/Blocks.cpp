@@ -3079,7 +3079,22 @@ UserBlock23::UserBlock23():BaseBlock()
 }
 block_t UserBlock23::getID(){ return 218;}
 
-EmptyBlock0::EmptyBlock0():BaseBlock()
+Cat::Cat():BaseBlock()
+{
+	textureRow = 23;
+
+	upPlane = 29;
+	downPlane = 29;
+	sidePlane = 5;
+	editable = true;
+	transparent = false;
+	soundType = -1;
+}
+block_t Cat::getID(){ return 219;}
+
+
+
+Empty::Empty():BaseBlock()
 {
 	textureRow = 32;
 
@@ -3090,8 +3105,7 @@ EmptyBlock0::EmptyBlock0():BaseBlock()
 	transparent = true;
 	soundType = -1;
 }
-block_t EmptyBlock0::getID(){ return 219;}
-
+block_t Empty::getID(){ return 220;}
 
 
 
@@ -3108,7 +3122,7 @@ MelonBlock::MelonBlock():BaseBlock()
     soundType = 3;
 
 }
-block_t MelonBlock::getID(){ return 220;}
+block_t MelonBlock::getID(){ return 221;}
 
 LifeBlock::LifeBlock():BaseBlock()
 {
@@ -3122,7 +3136,7 @@ LifeBlock::LifeBlock():BaseBlock()
 	soundType = -1;
 
 }
-block_t LifeBlock::getID(){ return 221;}
+block_t LifeBlock::getID(){ return 222;}
 
 EnderTop::EnderTop():BaseBlock()
 {
@@ -3136,7 +3150,7 @@ EnderTop::EnderTop():BaseBlock()
 	soundType = 2;
 
 }
-block_t EnderTop::getID(){ return 222;}
+block_t EnderTop::getID(){ return 223;}
 
 EnderLegs::EnderLegs():BaseBlock()
 {
@@ -3150,7 +3164,7 @@ EnderLegs::EnderLegs():BaseBlock()
 	soundType = 2;
 
 }
-block_t EnderLegs::getID(){ return 223;}
+block_t EnderLegs::getID(){ return 224;}
 
 ZombieTop::ZombieTop():BaseBlock()
 {
@@ -3164,7 +3178,7 @@ ZombieTop::ZombieTop():BaseBlock()
 	soundType = 2;
 
 }
-block_t ZombieTop::getID(){ return 224;}
+block_t ZombieTop::getID(){ return 225;}
 
 ZombieLegs::ZombieLegs():BaseBlock()
 {
@@ -3178,7 +3192,7 @@ ZombieLegs::ZombieLegs():BaseBlock()
 	soundType = 2;
 
 }
-block_t ZombieLegs::getID(){ return 225;}
+block_t ZombieLegs::getID(){ return 226;}
 
 TrapDoor2::TrapDoor2():BaseBlock()
 {
@@ -3193,7 +3207,7 @@ TrapDoor2::TrapDoor2():BaseBlock()
     blockSpecial = true;
     soundType = 3;
 }
-block_t TrapDoor2::getID(){ return 226;}
+block_t TrapDoor2::getID(){ return 227;}
 
 
 Door3::Door3():BaseBlock()
@@ -3209,7 +3223,7 @@ Door3::Door3():BaseBlock()
 	soundType = 3;
 
 }
-block_t Door3::getID(){ return 227;}
+block_t Door3::getID(){ return 228;}
 
 Door4::Door4():BaseBlock()
 {
@@ -3223,7 +3237,7 @@ Door4::Door4():BaseBlock()
 	blockSpecial = true;
 	soundType = 3;
 }
-block_t Door4::getID(){ return 228;}
+block_t Door4::getID(){ return 229;}
 
 Furnace2::Furnace2():BaseBlock()
 {
@@ -3238,7 +3252,7 @@ Furnace2::Furnace2():BaseBlock()
     soundType = 2;
 
 }
-block_t Furnace2::getID(){ return 229;}
+block_t Furnace2::getID(){ return 230;}
 
 Cloud::Cloud():BaseBlock()
 {
@@ -3251,7 +3265,7 @@ Cloud::Cloud():BaseBlock()
     transparent = true;
 
 }
-block_t Cloud::getID(){ return 230;}
+block_t Cloud::getID(){ return 231;}
 
 IronBlock::IronBlock():BaseBlock()
 {
@@ -3265,4 +3279,4 @@ IronBlock::IronBlock():BaseBlock()
 	soundType = 2;
 
 }
-block_t IronBlock::getID(){ return 231;}
+block_t IronBlock::getID(){ return 232;}

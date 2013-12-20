@@ -211,6 +211,8 @@ void StatePlay::Init()
 	mWorld->player.PlankNumber = 1;
 	mWorld->player.IronNumber = 1;
 	mWorld->player.IronIngNumber = 0;
+	mWorld->player.BoneNumber = 0;
+	mWorld->player.SandNumber = 1;
     mWorld->player.melons = 0;
     mWorld->player.hunger = 100;
     mWorld->player.score = 0;
@@ -278,6 +280,8 @@ void StatePlay::InitParametric(int terrainType,bool makeFlat,bool makeTrees,bool
 	mWorld->player.PlankNumber = 1;
 	mWorld->player.IronNumber = 1;
 	mWorld->player.IronIngNumber = 0;
+	mWorld->player.BoneNumber = 0;
+	mWorld->player.SandNumber = 1;
     mWorld->player.melons = 0;
     mWorld->player.hunger = 100;
     mWorld->player.score = 0;
@@ -328,6 +332,8 @@ void StatePlay::LoadMap(std::string fileName,bool compressed)
 		mWorld->player.PlankNumber = mWorld->PlankNumber();
 		mWorld->player.IronNumber = mWorld->IronNumber();
 		mWorld->player.IronIngNumber = mWorld->IronIngNumber();
+		mWorld->player.BoneNumber = mWorld->BoneNumber();
+		mWorld->player.SandNumber = mWorld->SandNumber();
         mWorld->player.melons = mWorld->melons();
         mWorld->player.hunger = mWorld->hunger();
         mWorld->player.score = mWorld->score();
@@ -858,6 +864,22 @@ void StatePlay::HandleEvents(StateManager* sManager)
                         mWorld->rebuildNearestChunks(curchunkTarget,testPos);
                         return;
                     }
+					//Open wolf menu if click on it
+					if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 219)
+                    {
+                        menuState = 7;
+                        
+
+                        int	curchunkTarget = mWorld->getChunkId(testPos);
+
+                        mWorld->GetBlock(testPos.x, testPos.y, testPos.z) = 219;
+                        fppCam->needUpdate = true;
+                        //Rebuild nearby world
+                        mWorld->rebuildChunk(curchunkTarget);
+                        mWorld->rebuildTransparentChunk(curchunkTarget);
+                        mWorld->rebuildNearestChunks(curchunkTarget,testPos);
+                        return;
+                    }
 					
 					if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 104)
                     {
@@ -883,6 +905,21 @@ void StatePlay::HandleEvents(StateManager* sManager)
                         int	curchunkTarget = mWorld->getChunkId(testPos);
 
                         mWorld->GetBlock(testPos.x, testPos.y, testPos.z) = 129;
+                        fppCam->needUpdate = true;
+                        //Rebuild nearby world
+                        mWorld->rebuildChunk(curchunkTarget);
+                        mWorld->rebuildTransparentChunk(curchunkTarget);
+                        mWorld->rebuildNearestChunks(curchunkTarget,testPos);
+                        return;
+                    }
+if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 7)
+                    {
+                        menuState = 8;
+                        selectPos = 0;
+
+                        int	curchunkTarget = mWorld->getChunkId(testPos);
+
+                        mWorld->GetBlock(testPos.x, testPos.y, testPos.z) = 7;
                         fppCam->needUpdate = true;
                         //Rebuild nearby world
                         mWorld->rebuildChunk(curchunkTarget);
@@ -1260,6 +1297,21 @@ void StatePlay::HandleEvents(StateManager* sManager)
                             
                                 if(mWorld->player.PlankNumber -= 1);
 								else if(mWorld->player.PlankNumber <= 0)
+								{
+								mWorld->player.health = 0;
+								mWorld->player.hunger = 0;
+								mWorld->player.gamemode = 2;
+								
+								}
+                            
+                        }
+						
+						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 7)
+                        {
+
+                            
+                                if(mWorld->player.SandNumber -= 1);
+								else if(mWorld->player.SandNumber <= 0)
 								{
 								mWorld->player.health = 0;
 								mWorld->player.hunger = 0;
@@ -1729,7 +1781,13 @@ void StatePlay::HandleEvents(StateManager* sManager)
                                 mWorld->player.IronNumber += 1;
                             
                         }
-						
+						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 7)
+                        {
+
+                            
+                                mWorld->player.SandNumber += 1;
+                            
+                        }
 						
                         
 
@@ -2226,7 +2284,13 @@ void StatePlay::HandleEvents(StateManager* sManager)
                             
                         }
 						
-						
+						if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 7)
+                        {
+
+                            
+                                mWorld->player.SandNumber += 1;
+                            
+                        }
 					
                     if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == IronBlock::getID())
                     {
@@ -2360,7 +2424,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
                 if(mWorld->player.gamemode == 0)
                 {
                     optionsMenuPos++;
-                    if(optionsMenuPos > 5)
+                    if(optionsMenuPos > 4)
                         optionsMenuPos = 0;
                 }
                 else
@@ -2426,10 +2490,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
                         int interval = mSoundMgr->PlayRandomAmbient();
                         nextMusic = curtime + interval;
                     }
-                    if(optionsMenuPos == 5)
-                    {
-                        CanSpawnMobs = !CanSpawnMobs;
-                    }
+                   
                 }
                 else
                 {
@@ -2568,7 +2629,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
         {
             selectPos--;
             if(selectPos < 0)
-                selectPos = 2;
+                selectPos = 3;
 
             mSoundMgr->PlayMenuSound();
         }
@@ -2576,7 +2637,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
         if(mSystemMgr->KeyPressed(PSP_CTRL_DOWN))
         {
             selectPos++;
-            if(selectPos > 2)
+            if(selectPos > 3)
                 selectPos = 0;
 
             mSoundMgr->PlayMenuSound();
@@ -2666,6 +2727,24 @@ void StatePlay::HandleEvents(StateManager* sManager)
 						if(mWorld->player.LogNumber -= 1);
 						{
 						mWorld->player.PlankNumber += 4;
+						}
+
+          
+                }
+                else
+                {
+                    return;
+                }
+            }
+			if(selectPos == 3)
+            {
+                if(mWorld->player.SandNumber >= 2)
+                {
+                   
+                        
+						if(mWorld->player.SandNumber -= 1);
+						{
+						mWorld->player.BoneNumber += 10;
 						}
 
           
@@ -2947,6 +3026,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
 
         if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
         {
+		
             menuState = 0;
             selectPos = 0;
             optionsMenuPos = 0;
@@ -2966,6 +3046,126 @@ void StatePlay::HandleEvents(StateManager* sManager)
 						{
 						mWorld->player.IronIngNumber += 1;
 						}
+			   }
+            }
+
+            if(selectPos == 1)//walk
+            {
+                if(mWorld->player.walkSpeed == 0 || mWorld->player.walkSpeed == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 2 || mWorld->player.walkSpeed == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 4)
+                {
+                    return;
+                }
+            }
+
+            if(selectPos == 2)//fire resisnatce
+            {
+                if(mWorld->player.fireResistance == 0 || mWorld->player.fireResistance == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 2 || mWorld->player.fireResistance == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 4)
+                {
+                    return;
+                }
+            }
+        }
+		else if(menuState == 7)
+    {
+     
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
+        {
+            menuState = 0;
+
+            optionsMenuPos = 0;
+            menuOptions = false;
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CROSS))
+        {
+       
+              if(mWorld->player.BoneNumber >= 2)
+              {
+                   
+                        
+						if(mWorld->player.BoneNumber -= 5)
+						{
+						CanSpawnMobs = false;
+						}
+			  }
+             }   
+ 			 
+        }
+		else if(menuState == 8)
+    {
+        if(mSystemMgr->KeyPressed(PSP_CTRL_UP))
+        {
+            selectPos--;
+            if(selectPos < 0)
+                selectPos = 2;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_DOWN))
+        {
+            selectPos++;
+            if(selectPos > 2)
+                selectPos = 0;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
+        {
+		
+            menuState = 0;
+            selectPos = 0;
+            optionsMenuPos = 0;
+            menuOptions = false;
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CROSS))
+        {
+            if(selectPos == 0)
+            {
+               
+               if(mWorld->player.BoneNumber >= 2)
+              {
+                   
+                        
+						if(mWorld->player.BoneNumber -= 5)
+						{
+						CanSpawnMobs = false;
+						}
+			  }
 			   }
             }
 
@@ -4085,15 +4285,18 @@ void StatePlay::Draw(StateManager* sManager)
 		 
     if(selectedCubeSet == 0)
 {
-mRender->DebugPrint(115,260,"%i",mWorld->player.GrassNumber - 1);
-mRender->DebugPrint(345,260,"%i",mWorld->player.LogNumber - 1);
-mRender->DebugPrint(145,260,"%i", mWorld->player.DirtNumber - 1);
+mRender->DebugPrint(110,270,"%i",mWorld->player.GrassNumber - 1);
+mRender->DebugPrint(355,270,"%i",mWorld->player.LogNumber - 1);
+mRender->DebugPrint(145,270,"%i", mWorld->player.DirtNumber - 1);
+mRender->DebugPrint(320,270,"%i", mWorld->player.SandNumber - 1);
+//Items
+mRender->DebugPrint(100,200,"Bone: %i", mWorld->player.BoneNumber);
 	   
 	}
 	   if(selectedCubeSet == 27)
 {
 
-	       mRender->DebugPrint(315,260,"%i", mWorld->player.PlankNumber - 1);
+	       mRender->DebugPrint(320,270,"%i", mWorld->player.PlankNumber - 1);
 		
 		
 
@@ -4101,7 +4304,8 @@ mRender->DebugPrint(145,260,"%i", mWorld->player.DirtNumber - 1);
 	
 	  if(selectedCubeSet == 36)
 {
-	      mRender->DebugPrint(255,260,"%i", mWorld->player.IronNumber - 1);
+	      mRender->DebugPrint(250,270,"%i", mWorld->player.IronNumber - 1);
+		  //Items
 		  mRender->DebugPrint(100,200,"Iron Ingot: %i", mWorld->player.IronIngNumber);
 		
 		
@@ -4183,7 +4387,7 @@ mRender->DebugPrint(145,260,"%i", mWorld->player.DirtNumber - 1);
                 mSoundMgr->playerSounds == true ? mRender->DebugPrint(130,135,"sounds: ON"):mRender->DebugPrint(130,135,"sounds: OFF");
                 canHeadBob == true ? mRender->DebugPrint(350,135,"Head bob: ON"):mRender->DebugPrint(350,135,"Head bob: OFF");
                 mSoundMgr->ambientSoundsEnabled == true ? mRender->DebugPrint(130,165,"Ambient sounds: ON"):mRender->DebugPrint(130,165,"Ambient sounds: OFF");
-                CanSpawnMobs == true ? mRender->DebugPrint(350,165,"Mobs: ON"):mRender->DebugPrint(350,165,"Mobs: OFF");
+                
             }
             else
             {
@@ -4326,6 +4530,10 @@ mRender->DebugPrint(145,260,"%i", mWorld->player.DirtNumber - 1);
 
         buttonSprite->SetPosition(240,200);
         buttonSprite->Draw();
+		
+		
+		buttonSprite->SetPosition(240,240);
+        buttonSprite->Draw();
 
         //selected button
         sbuttonSprite->SetPosition(240,(selectPos * 40) + 120);
@@ -4339,6 +4547,7 @@ mRender->DebugPrint(145,260,"%i", mWorld->player.DirtNumber - 1);
         mRender->DebugPrint(240,125,"Apples: %i", mWorld->player.Apples);
         mRender->DebugPrint(240,165,"Melons: %i", mWorld->player.melons);		
         mRender->DebugPrint(240,205,"Craft Plank from Log");
+		mRender->DebugPrint(240,245,"Craft Bone from Sand");
 
      
     }
@@ -4567,7 +4776,84 @@ mRender->DebugPrint(145,260,"%i", mWorld->player.DirtNumber - 1);
        
 
     }
+else if(menuState == 7)
+    {
+        sceGuDisable(GU_DEPTH_TEST);
+        sceGuEnable(GU_BLEND);
+        sceGuColor(GU_COLOR(1,1,1,1.0f));
 
+     
+        buttonSprite->SetPosition(240,100);
+        buttonSprite->Draw();
+
+
+
+
+
+
+        //selected button
+        sbuttonSprite->SetPosition(240,(selectPos * 30) + 100);
+        sbuttonSprite->Draw();
+
+        sceGuDisable(GU_BLEND);
+        sceGuEnable(GU_DEPTH_TEST);
+
+        mRender->DebugPrint(240,25,"WOLF");
+
+       
+
+        //draw subtitles on buttons
+        mRender->DebugPrint(240,105,"Give him a bone");
+
+  
+
+       
+
+    }
+		else if(menuState == 8)
+    {
+        sceGuDisable(GU_DEPTH_TEST);
+        sceGuEnable(GU_BLEND);
+        sceGuColor(GU_COLOR(1,1,1,1.0f));
+
+     
+        buttonSprite->SetPosition(240,100);
+        buttonSprite->Draw();
+
+
+        buttonSprite->SetPosition(240,130);
+        buttonSprite->Draw();
+
+ 
+        buttonSprite->SetPosition(240,160);
+        buttonSprite->Draw();
+
+
+
+        //selected button
+        sbuttonSprite->SetPosition(240,(selectPos * 30) + 100);
+        sbuttonSprite->Draw();
+
+        sceGuDisable(GU_BLEND);
+        sceGuEnable(GU_DEPTH_TEST);
+
+        mRender->DebugPrint(240,25,"WOLF");
+
+       
+
+        //draw subtitles on buttons
+        mRender->DebugPrint(240,105,"Make pet from wolf");
+
+        //draw subtitles on buttons
+        mRender->DebugPrint(240,135,"No other pets :(");
+
+        //draw subtitles on buttons
+        mRender->DebugPrint(240,165,"No other pets :(");
+
+
+       
+
+    }
     if(mWorld->player.gamemode == 0 || mWorld->player.gamemode == 2)
     {
         //Nice little effect to make the screen flash red

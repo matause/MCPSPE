@@ -1784,11 +1784,21 @@ public:
     static block_t getID();
 };
 
-class EmptyBlock0 : public BaseBlock
+class Cat : public BaseBlock
 {
 public:
 
-    EmptyBlock0();
+    Cat();
+    static block_t getID();
+};
+
+
+
+class Empty : public BaseBlock
+{
+public:
+
+    Empty();
     static block_t getID();
 };
 

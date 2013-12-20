@@ -266,7 +266,9 @@ CraftWorld::CraftWorld()
 	
 	blockTypes.push_back(UserBlock22());
     blockTypes.push_back(UserBlock23());
-	blockTypes.push_back(EmptyBlock0());
+	blockTypes.push_back(Cat());
+
+	blockTypes.push_back(Empty());
 
 	
     //must be last
@@ -390,11 +392,7 @@ void CraftWorld::SaveCompressedWorld(std::string  filename)
 	//numGrass
 	gzwrite(saveFile, &player.GrassNumber,sizeof(float));
 	
-	//numIron
-	gzwrite(saveFile, &player.IronNumber,sizeof(float));
 	
-	//numIronIng
-	gzwrite(saveFile, &player.IronIngNumber,sizeof(float));
 	
 	//numDirt
 	gzwrite(saveFile, &player.DirtNumber,sizeof(float));
@@ -404,7 +402,13 @@ void CraftWorld::SaveCompressedWorld(std::string  filename)
 	
 	//numPlank
 	gzwrite(saveFile, &player.PlankNumber,sizeof(float));
-
+//numIron
+	gzwrite(saveFile, &player.IronNumber,sizeof(float));
+	
+	//numIronIng
+	gzwrite(saveFile, &player.IronIngNumber,sizeof(float));
+	gzwrite(saveFile, &player.BoneNumber,sizeof(float));
+	gzwrite(saveFile, &player.SandNumber,sizeof(float));
     //num melons
     gzwrite(saveFile, &player.melons,sizeof(float));
 
@@ -546,12 +550,13 @@ void CraftWorld::LoadCompressedWorld(std::string  filename)
 		
 		
 		gzread(saveFile, &player.LogNumber,sizeof(float));
-		
+		gzread(saveFile, &player.PlankNumber,sizeof(float));
 		gzread(saveFile, &player.IronNumber,sizeof(float));
 		
 		gzread(saveFile, &player.IronIngNumber,sizeof(float));
 		
-		gzread(saveFile, &player.PlankNumber,sizeof(float));
+		gzread(saveFile, &player.BoneNumber,sizeof(float));
+		gzread(saveFile, &player.SandNumber,sizeof(float));
         //num melons
         gzread(saveFile, &player.melons,sizeof(float));
 
@@ -16973,6 +16978,17 @@ int CraftWorld::IronIngNumber()
     return player.IronIngNumber;
 }
 
+int CraftWorld::BoneNumber()
+{
+    return player.BoneNumber;
+}
+
+int CraftWorld::SandNumber()
+{
+    return player.SandNumber;
+}
+
+
 int CraftWorld::hunger()
 {
     return player.hunger;
@@ -17875,6 +17891,7 @@ void CraftWorld::RemoveMobs(int id)
                     GetBlock(x,y,z) = 0;
                     GetBlock(x,y+1,z) = 0;
                 }
+				
             }
         }
     }
@@ -17900,9 +17917,9 @@ void CraftWorld::SpawnMobs(int id)
                     {
                         int random = rand() % 120;
 
-                        if(random == 2)
+                        if(random == 3)
                         {
-                            int randomMob = rand()% 2;
+                            int randomMob = rand()% 3;
 
                             if(randomMob == 0)
                             {
@@ -17939,6 +17956,19 @@ void CraftWorld::SpawnMobs(int id)
                                     GetBlock(x,y,z) = EnderLegs::getID();
                                     GetBlock(x,y+1,z) = EnderTop::getID();
                                 }
+                            }
+							if(randomMob == 2)
+                            {
+                              if(worldDayTime >= 21.0f)
+							  {
+                                    if(GetBlockLight(x,y-1,z) < 128)
+                                    {
+                                        player.NumMobs += 1;
+                                        GetBlock(x,y,z) = Cat::getID();
+                                        GetBlock(x,y+1,z) = Empty::getID();
+                                    }
+                                 }
+                               
                             }
                         }
                     }
@@ -18414,6 +18444,137 @@ void CraftWorld::UpdateMobPos(int id)
                     {
                         GetBlock(x,y-1,z) = ZombieTop::getID();
                         GetBlock(x,y-2,z) = ZombieLegs::getID();
+                        GetBlock(x,y,z) = 0;
+                    }
+                }
+				//Cat
+                if(GetBlock(x,y,z) == Empty::getID() && GetBlock(x,y-1,z) == Cat::getID())
+                {
+                    if(GetBlock(x,y-2,z) != 0) //if on ground
+                    {
+                        int randomMove = rand() % 4;
+
+                        if(randomMove == 0)
+                        {
+                            if((GetBlock(x-1,y,z) == 0 || GetBlock(x-1,y,z) == Snow2::getID()) && GetBlock(x-1,y+1,z) == 0 && (GetBlock(x-1,y-1,z) != 0 && GetBlock(x-1,y-1,z) != Snow2::getID()))
+                            {
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x-1,y,z) = Cat::getID();
+                                GetBlock(x-1,y+1,z) = Empty::getID();
+                            }
+                            else if(GetBlock(x-1,y,z) == 0 && (GetBlock(x-1,y-1,z) == 0 || GetBlock(x-1,y-1,z) == Snow2::getID()) && (GetBlock(x-1,y-2,z) != 0 && GetBlock(x-1,y-2,z) != Snow2::getID()))
+                            {
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x-1,y,z) = Empty::getID();
+                                GetBlock(x-1,y-1,z) = Cat::getID();
+                            }
+                            else if(GetBlock(x-1,y-1,z) == 0 && (GetBlock(x-1,y-2,z) == 0 || GetBlock(x-1,y-2,z) == Snow2::getID()) && (GetBlock(x-1,y-3,z) != 0 && GetBlock(x-1,y-3,z) != Snow2::getID()))
+                            {
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x-1,y-1,z) = Empty::getID();
+                                GetBlock(x-1,y-2,z) = Cat::getID();
+                            }
+                        }
+
+                        if(randomMove == 1)
+                        {
+                            if((GetBlock(x+1,y,z) == 0 || GetBlock(x+1,y,z) == Snow2::getID()) && GetBlock(x+1,y+1,z) == 0 && (GetBlock(x+1,y-1,z) != 0 && GetBlock(x+1,y-1,z) != Snow2::getID()))
+                            {
+
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x+1,y,z) = Cat::getID();
+                                GetBlock(x+1,y+1,z) = Empty::getID();
+                            }
+                            else if(GetBlock(x+1,y,z) == 0 && (GetBlock(x+1,y-1,z) == 0 || GetBlock(x+1,y-1,z) == Snow2::getID()) && (GetBlock(x+1,y-2,z) != 0 && GetBlock(x+1,y-2,z) != Snow2::getID()))
+                            {
+
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x+1,y,z) = Empty::getID();
+                                GetBlock(x+1,y-1,z) = Cat::getID();
+                            }
+                            else if(GetBlock(x+1,y-1,z) == 0 && (GetBlock(x+1,y-2,z) == 0 || GetBlock(x+1,y-2,z) == Snow2::getID()) && (GetBlock(x+1,y-3,z) != 0 && GetBlock(x+1,y-3,z) != Snow2::getID()))
+                            {
+
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x+1,y-1,z) = Empty::getID();
+                                GetBlock(x+1,y-2,z) = Cat::getID();
+                            }
+                        }
+
+                        if(randomMove == 2)
+                        {
+                            if((GetBlock(x,y,z-1) == 0 || GetBlock(x,y,z-1) == Snow2::getID()) && GetBlock(x,y+1,z-1) == 0 && (GetBlock(x,y-1,z-1) != 0 && GetBlock(x,y-1,z-1) != Snow2::getID()))
+                            {
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x,y,z-1) = Cat::getID();
+                                GetBlock(x,y+1,z-1) = Empty::getID();
+                            }
+                            else if(GetBlock(x,y,z-1) == 0 && (GetBlock(x,y-1,z-1) == 0 || GetBlock(x,y-1,z-1) == Snow2::getID()) && (GetBlock(x,y-2,z-1) != 0 && GetBlock(x,y-2,z-1) != Snow2::getID()))
+                            {
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x,y,z-1) = Empty::getID();
+                                GetBlock(x,y-1,z-1) = Cat::getID();
+                            }
+                            else if(GetBlock(x,y-1,z-1) == 0 && (GetBlock(x,y-2,z-1) == 0 || GetBlock(x,y-2,z-1) == Snow2::getID()) && (GetBlock(x,y-3,z-1) != 0 && GetBlock(x,y-3,z-1) != Snow2::getID()))
+                            {
+
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x,y-1,z-1) = Empty::getID();
+                                GetBlock(x,y-2,z-1) = Cat::getID();
+                            }
+                        }
+
+                        if(randomMove == 3)
+                        {
+                            if((GetBlock(x,y,z+1) == 0 || GetBlock(x,y,z+1) == Snow2::getID()) && GetBlock(x,y+1,z+1) == 0 && (GetBlock(x,y-1,z+1) != 0 && GetBlock(x,y-1,z+1) != Snow2::getID()))
+                            {
+
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x,y,z+1) = Cat::getID();
+                                GetBlock(x,y+1,z+1) = Empty::getID();
+                            }
+                            else if(GetBlock(x,y,z+1) == 0 && (GetBlock(x,y-1,z+1) == 0 || GetBlock(x,y-1,z+1) == Snow2::getID()) && (GetBlock(x,y-2,z+1) != 0 && GetBlock(x,y-2,z+1) != Snow2::getID()))
+                            {
+
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x,y,z+1) = Empty::getID();
+                                GetBlock(x,y-1,z+1) = Cat::getID();
+                            }
+                            else if(GetBlock(x,y-1,z+1) == 0 && (GetBlock(x,y-2,z+1) == 0 || GetBlock(x,y-2,z+1) == Snow2::getID()) && (GetBlock(x,y-3,z+1) != 0 && GetBlock(x,y-3,z+1) != Snow2::getID()))
+                            {
+
+
+                                GetBlock(x,y,z) = 0;
+                                GetBlock(x,y-1,z) = 0;
+                                GetBlock(x,y-1,z+1) = Empty::getID();
+                                GetBlock(x,y-2,z+1) = Cat::getID();
+                            }
+                        }
+                    }
+                    else if(GetBlock(x,y-2,z) == 0 || GetBlock(x,y-2,z) == Snow2::getID())
+                    {
+                        GetBlock(x,y-1,z) = Empty::getID();
+                        GetBlock(x,y-2,z) = Cat::getID();
                         GetBlock(x,y,z) = 0;
                     }
                 }
