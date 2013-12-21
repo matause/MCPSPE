@@ -195,7 +195,9 @@ void StatePlay::Init()
     optionsMenuPos = 0;
 
     menuState = 3;
-
+    
+	animalState = 0;
+	
     analogLeft = analogRight = analogUp = analogDown = false;
 
     walkSoundAccu = 0.0f;
@@ -864,22 +866,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
                         mWorld->rebuildNearestChunks(curchunkTarget,testPos);
                         return;
                     }
-					//Open wolf menu if click on it
-					if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 219)
-                    {
-                        menuState = 7;
-                        
-
-                        int	curchunkTarget = mWorld->getChunkId(testPos);
-
-                        mWorld->GetBlock(testPos.x, testPos.y, testPos.z) = 219;
-                        fppCam->needUpdate = true;
-                        //Rebuild nearby world
-                        mWorld->rebuildChunk(curchunkTarget);
-                        mWorld->rebuildTransparentChunk(curchunkTarget);
-                        mWorld->rebuildNearestChunks(curchunkTarget,testPos);
-                        return;
-                    }
+					
 					
 					if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 104)
                     {
@@ -914,7 +901,7 @@ void StatePlay::HandleEvents(StateManager* sManager)
                     }
 if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 7)
                     {
-                        menuState = 8;
+                       animalState = 1;
                         selectPos = 0;
 
                         int	curchunkTarget = mWorld->getChunkId(testPos);
@@ -3099,6 +3086,126 @@ if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 7)
         }
 		else if(menuState == 7)
     {
+     if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
+        {
+            menuState = 0;
+
+            optionsMenuPos = 0;
+            menuOptions = false;
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CROSS))
+        {
+       
+              if(mWorld->player.BoneNumber >= 2)
+              {
+                   
+                        
+						if(mWorld->player.BoneNumber -= 5)
+						{
+						CanSpawnMobs = false;
+						}
+			  }
+             }   
+ 			 
+        }
+		else if(menuState == 8)
+    {
+        if(mSystemMgr->KeyPressed(PSP_CTRL_UP))
+        {
+            selectPos--;
+            if(selectPos < 0)
+                selectPos = 2;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_DOWN))
+        {
+            selectPos++;
+            if(selectPos > 2)
+                selectPos = 0;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
+        {
+		
+            menuState = 0;
+            selectPos = 0;
+            optionsMenuPos = 0;
+            menuOptions = false;
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CROSS))
+        {
+            if(selectPos == 0)
+            {
+               
+               if(mWorld->player.BoneNumber >= 2)
+              {
+                   
+                        
+						if(mWorld->player.BoneNumber -= 5)
+						{
+						CanSpawnMobs = false;
+						}
+			  }
+			   }
+            }
+
+            if(selectPos == 1)//walk
+            {
+                if(mWorld->player.walkSpeed == 0 || mWorld->player.walkSpeed == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 2 || mWorld->player.walkSpeed == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 4)
+                {
+                    return;
+                }
+            }
+
+            if(selectPos == 2)//fire resisnatce
+            {
+                if(mWorld->player.fireResistance == 0 || mWorld->player.fireResistance == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 2 || mWorld->player.fireResistance == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 4)
+                {
+                    return;
+                }
+            }
+ 			 
+        }
+		if(animalState == 1)
+    {
      
         if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
         {
@@ -4805,6 +4912,155 @@ else if(menuState == 7)
         //draw subtitles on buttons
         mRender->DebugPrint(240,105,"Give him a bone");
 
+  
+
+       
+
+    }
+	if(animalState == 1)
+    {
+        sceGuDisable(GU_DEPTH_TEST);
+        sceGuEnable(GU_BLEND);
+        sceGuColor(GU_COLOR(1,1,1,1.0f));
+
+     
+        buttonSprite->SetPosition(240,100);
+        buttonSprite->Draw();
+
+
+
+
+
+
+        //selected button
+        sbuttonSprite->SetPosition(240,(selectPos * 30) + 100);
+        sbuttonSprite->Draw();
+
+        sceGuDisable(GU_BLEND);
+        sceGuEnable(GU_DEPTH_TEST);
+
+        mRender->DebugPrint(240,25,"WOLF");
+
+       
+
+        //draw subtitles on buttons
+        mRender->DebugPrint(240,105,"Give him a bone");
+if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
+        {
+            menuState = 0;
+
+            optionsMenuPos = 0;
+            menuOptions = false;
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CROSS))
+        {
+       
+              if(mWorld->player.BoneNumber >= 2)
+              {
+                   
+                        
+						if(mWorld->player.BoneNumber -= 5)
+						{
+						CanSpawnMobs = false;
+						}
+			  }
+             }   
+ 			 
+        }
+		else if(menuState == 8)
+    {
+        if(mSystemMgr->KeyPressed(PSP_CTRL_UP))
+        {
+            selectPos--;
+            if(selectPos < 0)
+                selectPos = 2;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_DOWN))
+        {
+            selectPos++;
+            if(selectPos > 2)
+                selectPos = 0;
+
+            mSoundMgr->PlayMenuSound();
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CIRCLE))
+        {
+		
+            menuState = 0;
+            selectPos = 0;
+            optionsMenuPos = 0;
+            menuOptions = false;
+        }
+
+        if(mSystemMgr->KeyPressed(PSP_CTRL_CROSS))
+        {
+            if(selectPos == 0)
+            {
+               
+               if(mWorld->player.BoneNumber >= 2)
+              {
+                   
+                        
+						if(mWorld->player.BoneNumber -= 5)
+						{
+						CanSpawnMobs = false;
+						}
+			  }
+			   }
+            }
+
+            if(selectPos == 1)//walk
+            {
+                if(mWorld->player.walkSpeed == 0 || mWorld->player.walkSpeed == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 2 || mWorld->player.walkSpeed == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.walkSpeed += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.walkSpeed == 4)
+                {
+                    return;
+                }
+            }
+
+            if(selectPos == 2)//fire resisnatce
+            {
+                if(mWorld->player.fireResistance == 0 || mWorld->player.fireResistance == 1)
+                {
+                    if(mWorld->player.score >= 60)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 60;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 2 || mWorld->player.fireResistance == 3)
+                {
+                    if(mWorld->player.score >= 90)
+                    {
+                        mWorld->player.fireResistance += 1;
+                        mWorld->player.score -= 90;
+                    }
+                }
+                else if(mWorld->player.fireResistance == 4)
+                {
+                    return;
+                }
+            }
   
 
        

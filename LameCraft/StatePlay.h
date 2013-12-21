@@ -163,6 +163,7 @@ private:
 	Sprite *sbuttonSprite;
 
 	int menuState;//0 game,1 menu
+	int animalState;
 	bool menuOptions;
 	int optionsMenuPos;
 	int selectPos;
