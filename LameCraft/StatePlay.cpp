@@ -899,20 +899,9 @@ void StatePlay::HandleEvents(StateManager* sManager)
                         mWorld->rebuildNearestChunks(curchunkTarget,testPos);
                         return;
                     }
-if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 7)
+if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == 220)
                     {
-                       animalState = 1;
-                        selectPos = 0;
-
-                        int	curchunkTarget = mWorld->getChunkId(testPos);
-
-                        mWorld->GetBlock(testPos.x, testPos.y, testPos.z) = 7;
-                        fppCam->needUpdate = true;
-                        //Rebuild nearby world
-                        mWorld->rebuildChunk(curchunkTarget);
-                        mWorld->rebuildTransparentChunk(curchunkTarget);
-                        mWorld->rebuildNearestChunks(curchunkTarget,testPos);
-                        return;
+                       CanSpawnMobs = false;
                     }
 
                     if (mWorld->GetBlock(testPos.x, testPos.y, testPos.z) == Door4::getID())
@@ -4387,9 +4376,12 @@ void StatePlay::Draw(StateManager* sManager)
     }
 
 	
+{
 
-	    
+		 CanSpawnMobs == true ? mRender->DebugPrint(350,165,"Wolf: ON"):mRender->DebugPrint(350,165,"Wolf: OFF");
 		 
+		 
+	  }	 
     if(selectedCubeSet == 0)
 {
 mRender->DebugPrint(110,270,"%i",mWorld->player.GrassNumber - 1);
